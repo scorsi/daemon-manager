@@ -1,27 +1,27 @@
 #!/bin/sh
 ### BEGIN INIT INFO
-# Provides:          smartalog
-# Required-Start:    networking postgresql nuukik-hazelcast mysql apache2 cups elasticsearch tomcat7
-# Required-Stop:     networking postgresql nuukik-hazelcast mysql apache2 cups elasticsearch tomcat7
+# Provides:          my_daemon
+# Required-Start:    networking
+# Required-Stop:     networking
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: smartalog
-# Description:       This file should be used to start and stop nuukik-hazelcast.
+# Short-Description: my_daemon
+# Description:       This file should be used to start and stop my_daemon.
 ### END INIT INFO
 
 # Using LSB functions
 . /lib/lsb/init-functions
 
 # Process name
-NAME=smartalog
+NAME=my_daemon
 # Path
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 # Deamon File
-DAEMON=/home/nuukik/scripts/smartalog-watcher.sh
+DAEMON=/usr/bon/my_daemon.sh
 # Log file
-LOGFILE=/var/log/smartalog.log
+LOGFILE=/var/log/my_daemon.log
 # Pid file
-PIDFILE=/var/run/smartalog.pid
+PIDFILE=/var/run/my_daemon.pid
 # User who executs daemon
 USER=root
 
