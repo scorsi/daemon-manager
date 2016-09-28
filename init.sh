@@ -13,7 +13,7 @@
 . /lib/lsb/init-functions
 
 # Process name
-NAME=my_daemon
+DAEMON_NAME=my_daemon
 # Path
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 # Deamon File
@@ -23,7 +23,7 @@ LOGFILE=/var/log/my_daemon.log
 # Pid file
 PIDFILE=/var/run/my_daemon.pid
 # User who executs daemon
-USER=root
+DAEMON_USER=root
 
 
 ### Functions
@@ -35,14 +35,14 @@ d_usage () {
 d_stop () {
   if [ -e $PIDFILE ]
   then
-    status_of_proc -p $PIDFILE $NAME "Stoppping the $NAME process" && status="0" || status="$?"
+    status_of_proc -p $PIDFILE $DAEMON_NAME "Stoppping the $DAEMON_NAME process" && status="0" || status="$?"
     if [ "$status" = 0 ]
     then
       start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
       /bin/rm -rf $PIDFILE
     fi
   else
-    log_daemon_msg "$NAME process is not running"
+    log_daemon_msg "$DAEMON_NAME process is not running"
     log_end_msg 0
   fi
 }
@@ -50,11 +50,11 @@ d_stop () {
 d_start () {
   if [ -e $PIDFILE ]
   then
-    echo "$NAME is already executed"
+    echo "$DAEMON_NAME is already executed"
   else
     /bin/touch $PIDFILE
-    log_daemon_msg "Starting the process" "$NAME"
-    start-stop-daemon --background --name $NAME --start --quiet --oknodo --pidfile $PIDFILE --make-pidfile --exec $DAEMON --chuid $USER
+    log_daemon_msg "Starting the process" "$DAEMON_NAME"
+    start-stop-daemon --background --name $DAEMON_NAME --start --quiet --oknodo --pidfile $PIDFILE --make-pidfile --exec $DAEMON --chuid $DAEMON_USER
     log_end_msg $?
   fi
 }
@@ -86,9 +86,9 @@ case $1 in
     # Check the status of the process.
     if [ -e $PIDFILE ]
     then
-      status_of_proc -p $PIDFILE $DAEMON "$NAME process" && exit 0 || exit $?
+      status_of_proc -p $PIDFILE $DAEMON "$DAEMON_NAME process" && exit 0 || exit $?
     else
-      log_daemon_msg "$NAME Process is not running"
+      log_daemon_msg "$DAEMON_NAME Process is not running"
       log_end_msg 0
     fi
     ;;
@@ -97,8 +97,8 @@ case $1 in
     # it configurations.
     if [ -e $PIDFILE ]
     then
-      start-stop-daemon --stop --signal USR1 --quiet --pidfile $PIDFILE --name $NAME
-      log_success_msg "$NAME process reloaded successfully"
+      start-stop-daemon --stop --signal USR1 --quiet --pidfile $PIDFILE --name $DAEMON_NAME
+      log_success_msg "$DAEMON_NAME process reloaded successfully"
     else
       log_failure_msg "$PIDFILE does not exists"
     fi
